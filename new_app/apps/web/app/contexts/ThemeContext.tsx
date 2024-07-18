@@ -6,7 +6,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { getLocalStorage, setLocalStorage } from "../store";
+import { getLocalStorage } from "../store";
 
 interface ThemeContextType {
   theme: string;
