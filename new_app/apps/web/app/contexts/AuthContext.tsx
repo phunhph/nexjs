@@ -7,8 +7,8 @@ import {
   useEffect,
 } from "react";
 import { loginAPI } from "../api/login";
-import { getLocalStorage, setLocalStorage } from "../store";
-
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from "../store";
+import { usePathname, useSearchParams } from "next/navigation";
 interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
@@ -25,10 +25,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const pathname = usePathname();
   useEffect(() => {
-    const authToken = getLocalStorage(key);
-    if (authToken) {
-      window.location.href = "/";
+    if (pathname === "/logout") {
+      removeLocalStorage(key);
+    } else {
+      const authToken = getLocalStorage(key);
+      if (authToken) {
+        window.location.href = "/";
+      }
     }
   });
   const login = async (email: string, password: string) => {
@@ -52,7 +57,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = () => {};
+  const logout = () => {
+    removeLocalStorage(key);
+  };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, loading, login, logout }}>

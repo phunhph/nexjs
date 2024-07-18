@@ -12,12 +12,16 @@ export const getLocalStorage = (key: string) => {
   return null;
 };
 export const setLocalStorage = (key: string, value: any, expiresIn: any) => {
-  const expiryTime = new Date().getTime() + expiresIn * 1000;
-  const tokenData = {
-    value,
-    expiryTime,
-  };
-  localStorage.setItem(key, JSON.stringify(tokenData));
+  if (!expiresIn) {
+    localStorage.setItem(key, JSON.stringify(value));
+  } else {
+    const expiryTime = new Date().getTime() + expiresIn * 1000;
+    const tokenData = {
+      value,
+      expiryTime,
+    };
+    localStorage.setItem(key, JSON.stringify(tokenData));
+  }
 };
 export const removeLocalStorage = (key: string) => {
   localStorage.removeItem(key);

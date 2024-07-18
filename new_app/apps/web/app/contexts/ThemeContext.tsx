@@ -6,6 +6,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { getLocalStorage, setLocalStorage } from "../store";
 
 interface ThemeContextType {
   theme: string;
@@ -41,19 +42,24 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-    const root = document.documentElement;
+    const authToken = getLocalStorage("authToken");
+    if (authToken) {
+      localStorage.setItem("theme", theme);
+      const root = document.documentElement;
 
-    if (theme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-      root.style.setProperty("--background", "#0a0a0a");
-      root.style.setProperty("--foreground", "#ededed");
+      if (theme === "dark") {
+        root.classList.add("dark");
+        root.classList.remove("light");
+        root.style.setProperty("--background", "#0a0a0a");
+        root.style.setProperty("--foreground", "#ededed");
+      } else {
+        root.classList.add("light");
+        root.classList.remove("dark");
+        root.style.removeProperty("--background");
+        root.style.removeProperty("--foreground");
+      }
     } else {
-      root.classList.add("light");
-      root.classList.remove("dark");
-      root.style.removeProperty("--background");
-      root.style.removeProperty("--foreground");
+      window.location.href = "/login";
     }
   }, [theme]);
 
