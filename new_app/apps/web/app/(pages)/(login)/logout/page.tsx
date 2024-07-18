@@ -1,3 +1,10 @@
-export default function Logout() {
-  return <h1>Logout page</h1>;
+import Logout from "../../../components/LogoutComponent";
+import { AuthProvider } from "../../../contexts/AuthContext";
+
+export default function Home() {
+  return (
+    <AuthProvider>
+      <Logout />
+    </AuthProvider>
+  );
 }

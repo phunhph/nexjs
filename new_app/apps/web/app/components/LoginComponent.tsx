@@ -5,14 +5,34 @@ import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { login, loading } = useAuth();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Thêm logic xử lý đăng nhập ở đây
-    login();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    // Reset errors
+    setErrors({});
+
+    // Validate
+    let formErrors: { [key: string]: string } = {};
+    if (!email) {
+      formErrors.email = "Email is required";
+    }
+    if (!password) {
+      formErrors.password = "Password is required";
+    }
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   return (
@@ -34,8 +54,13 @@ const Login = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-600 leading-tight focus:outline-none focus:shadow-outline"
+              className={`shadow appearance-none border ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-600 leading-tight focus:outline-none focus:shadow-outline`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-xs italic">{errors.email}</p>
+            )}
           </div>
           <div className="mb-6">
             <label
@@ -49,15 +74,20 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-600 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className={`shadow appearance-none border ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-600 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
             />
+            {errors.password && (
+              <p className="text-red-500 text-xs italic">{errors.password}</p>
+            )}
           </div>
           <div className="flex items-center justify-between">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Sign In
+              {loading ? "Logging in..." : "Sign In"}
             </button>
           </div>
         </form>
