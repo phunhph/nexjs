@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { ModeToggle } from "./ThemeComponents";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,17 +37,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-      <div className="bg-white dark:bg-gray-700 p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">
-          Login
-        </h2>
+    <div className="min-h-screen flex items-center justify-center">
+      <div id="login" className="p-8 rounded shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6">Login</h2>
+        <ModeToggle />
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
-              htmlFor="email"
-            >
+            <label className="block  text-sm font-bold mb-2" htmlFor="email">
               Email
             </label>
             <input
@@ -56,17 +53,14 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               className={`shadow appearance-none border ${
                 errors.email ? "border-red-500" : "border-gray-300"
-              } rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-600 leading-tight focus:outline-none focus:shadow-outline`}
+              } rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline`}
             />
             {errors.email && (
               <p className="text-red-500 text-xs italic">{errors.email}</p>
             )}
           </div>
           <div className="mb-6">
-            <label
-              className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="password">
               Password
             </label>
             <input
@@ -76,7 +70,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               className={`shadow appearance-none border ${
                 errors.password ? "border-red-500" : "border-gray-300"
-              } rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-600 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+              } rounded w-full  py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
             />
             {errors.password && (
               <p className="text-red-500 text-xs italic">{errors.password}</p>

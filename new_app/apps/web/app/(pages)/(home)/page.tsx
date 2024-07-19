@@ -12,6 +12,7 @@ export default function Home() {
         <div className={styles.page}>
           <main className={styles.main}>
             <Image
+              id="logo"
               className={styles.logo}
               src="/next.svg"
               alt="Next.js logo"
@@ -43,6 +44,7 @@ export default function Home() {
                 Deploy now
               </a>
               <a
+                id="read"
                 href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
                 target="_blank"
                 rel="noopener noreferrer"
